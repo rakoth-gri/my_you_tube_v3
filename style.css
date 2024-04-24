@@ -1,0 +1,357 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px;
+}
+
+:root {
+  --app-dark-color: beige;
+  --app-light-color: rgb(56, 56, 53);
+
+  --app-dark-bg: rgb(29, 30, 46);
+  --app-light-bg: beige;
+
+  --app-default-color: var(--app-dark-color);
+  --app-default-bg: var(--app-dark-bg);
+}
+
+body {
+  font-size: 1.25rem;
+  font-family: "Roboto";
+  padding: 1rem;
+  background-color: var(--app-default-bg);
+  color: var(--app-default-color);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-align: center;
+  margin: 0.5em 0px;
+  letter-spacing: 0.25px;
+  font-family: "Montserrat";
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.88px;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.15em;
+}
+
+h4 {
+  font-size: 1.07em;
+}
+
+.root {
+  height: 80vh;
+  position: relative;
+  padding: 1rem;
+}
+
+select,
+input,
+button {
+  font-size: inherit;
+  font-family: inherit;
+  outline: none;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  border: 1px solid brown;
+  background: transparent;
+  color: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+/* theme */
+
+.theme {
+  padding: 1rem;
+  font-family: 'Montserrat';
+  font-size: 1.1em;
+  font-variant: small-caps;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.theme__icon span {
+  font-size: 1.8em;
+}
+
+.theme:hover {
+  color:cyan
+}
+
+.theme input {
+  display: none;
+}
+
+/* searchPanel */
+
+.searchPanel {
+  margin: 1.5rem 0;
+}
+
+.searchPanel input {
+  font-family: 'Montserrat';
+  width: 100%;
+  cursor: text;
+  border: 2px solid transparent;
+  border-radius: 0.8rem;
+  letter-spacing: 0.4px;
+  box-shadow: 2px 2px 8px rgb(165, 72, 56), 2px 2px 8px rgb(165, 72, 56);
+}
+
+/* loader *********************************************************** */
+
+.loaderWrap {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 90px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+}
+
+.loaderWrap.active {
+  display: flex;
+}
+
+.loader {
+  will-change: transform, opacity;
+  z-index: 2;
+  width: 85%;
+  height: 85%;
+  border: 4px dashed rgb(32, 185, 185);
+  border-radius: 50%;
+  animation: twister 0.7s linear infinite;
+}
+
+@keyframes twister {
+  from {
+    transform: rotate3d(0, 0, 1, 0deg);
+    opacity: 1;
+  }
+  to {
+    transform: rotate3d(0, 0, 1, 360deg);
+    opacity: 0;
+  }
+}
+
+/* $controls *********************************************************** */
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: var(--app-default-bg);
+}
+
+.controls select {
+  border: 2px solid;
+  padding: 1rem;
+  background-color: var(--app-default-bg);
+  cursor: pointer;
+}
+
+.controls select option {
+  color: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-variant: small-caps;
+  letter-spacing: 1px;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+
+.controls__pagination {
+  width: auto;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.controls__pagination button {
+  margin-right: 1.5rem;
+  cursor: pointer;
+  display: grid;
+  width: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.controls__pagination_page {
+  padding: 0.8rem;
+  margin-right: 1.5rem;
+  font-size: 1.25em;
+  font-family: "Montserrat";
+  color: crimson;
+  font-weight: 500;
+}
+
+/* $videoContainer *********************************************************** */
+
+.videos {
+  width: 80%;
+  margin: 1rem auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-auto-rows: 420px;
+  grid-gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+/* card *********************************************************** */
+
+.videos a {
+  display: block;
+  height: 100%;
+  margin-right: 3px;
+  font-size: 1em;
+}
+
+.card {
+  padding: 0.5rem;
+  display: flex;
+  height: 100%;
+  border-radius: 10px;
+  flex-direction: column;
+  text-align: center;
+  justify-content: space-between;
+  background: var(--app-default-bg);
+}
+
+.card__thumbnails {
+  height: 55%;
+  margin-top: auto;
+  margin-bottom: 2rem;
+}
+
+.card__thumbnails img {
+  width: 97%;
+  height: 100%;
+  border-radius: 0.5em;
+  object-fit: cover;
+}
+
+.card__info {
+  text-align: right;
+  font-size: 0.83em;
+  letter-spacing: 0.5px;
+  color: rgb(217, 44, 13);
+  font-variant: small-caps;
+}
+
+/* singleVIDEO PAGE STYLES */
+
+.video {
+  padding: 0.5rem;
+  width: 70%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.video a {
+  margin: 0.75rem;
+  font-size: 1.1em;
+  font-variant: small-caps;
+  letter-spacing: 0.4px;
+  color: lightseagreen;
+  text-align: right;
+  font-weight: 700;
+  font-family: "Montserrat";
+}
+
+.chanellTitle {
+  text-align: right;
+}
+
+.meta {
+  padding: 0.5rem;
+  display: flex;
+  width: 75%;
+  justify-content: space-around;
+  margin: 0.5rem auto;
+}
+
+.meta__categoryId,
+.meta__madeForKids {
+  margin: 0.5rem 0.3rem;
+  display: inline-block;
+}
+
+.meta__madeForKids {
+  color: crimson;
+}
+
+.iframe {
+  width: 75%;
+}
+
+.videoInfo {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  justify-content: space-between;
+  width: 75%;
+  margin: 0.5rem auto;
+}
+
+.videoInfo__stats {
+  display: flex;
+  justify-content: space-evenly;
+  width: 35%;
+  letter-spacing: 0.7px;
+  font-weight: 500;
+  font-size: 1.06em;
+}
+
+.videoInfo__stats > div {
+  display: flex;
+  align-items: center;
+  margin-right: 1.2rem;
+}
+
+.material-symbols-outlined {
+  font-size: 1.15em;
+  color: hotpink;
+  margin-right: 4px;
+}
+
+.description {
+  text-indent: 1em;
+  text-align: justify;
+  word-wrap: normal;
+  line-height: 1.5em;
+  padding: 0.5rem 1.5rem;
+  letter-spacing: 0.4px;
+}
+
+.tags {
+  padding: 0.5rem 1.5rem;
+  letter-spacing: 0.4px;
+  font-weight: 700;
+}
