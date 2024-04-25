@@ -1,9 +1,18 @@
-import { Visualizer } from "./Visualizer.js";
-import { debounce } from "./debounce.js";
-import { setToLs } from "./storage.js";
+import { Visualizer } from "./Visualizer";
+import { debounce } from "./debounce";
+import { setToLs } from "./storage";
+// TYPES:
+import { T_PAGINTAION_BTNS, T_STORE, T_RESOURCE } from "./../types/types";
 
 class VideosVisualizer extends Visualizer {
-  constructor(...args) {
+  $videoContainer: null | HTMLDivElement;
+  $pagination: null | HTMLDivElement;
+  // INPUTS DOM:
+  $themeInput: null | HTMLInputElement;
+  $search: null | HTMLInputElement;
+  debouncedSearchValue: (...args: unknown[]) => any;
+
+  constructor(...args: [T_STORE, string]) {
     // DOM
     super(...args);
     this.$videoContainer = null;
@@ -11,21 +20,25 @@ class VideosVisualizer extends Visualizer {
     this.$pagination = null;
     this.$themeInput = null;
     this.debouncedSearchValue = debounce(
-      (...args) => this.store.updateQueryParam(...args),
+      (...args: unknown[]) => this.store.updateQueryParam(...args),
       500
     );
     // INVOKING Queue
-    this.builder(this.$container, this.store.resource, this.store.id);
+    this.builder(
+      this.$container as HTMLDivElement,
+      this.store.resource,
+      this.store.id
+    );
   }
 
-  builder(...args) {
+  builder(...args: [HTMLDivElement, T_RESOURCE, string]) {
     // наследуем метод:
     super.builder(...args);
     this.addListenerToSearch();
     this.addListenerToThemeInput();
   }
 
-  renderUIElems($container) {
+  renderUIElems($container: HTMLDivElement) {
     $container.insertAdjacentHTML(
       "beforeend",
       ` <label class="theme"> 
@@ -56,9 +69,11 @@ class VideosVisualizer extends Visualizer {
             ${Object.keys(this.store.orderType)
               .map(
                 (key, i) =>
-                  `<option value="${this.store.orderType[key]}" ${
-                    i === 0 ? "disabled" : ""
-                  }> ${key} </option>`
+                  `<option value="${
+                    this.store.orderType[
+                      key as keyof typeof this.store.orderType
+                    ]
+                  }" ${i === 0 ? "disabled" : ""}> ${key} </option>`
               )
               .join("")};         
           </select>
@@ -66,21 +81,23 @@ class VideosVisualizer extends Visualizer {
           ${Object.keys(this.store.maxResultType)
             .map(
               (key, i) =>
-                `<option value="${this.store.maxResultType[key]}" ${
-                  i === 0 ? "disabled" : ""
-                }> ${key} </option>`
+                `<option value="${
+                  this.store.maxResultType[
+                    key as keyof typeof this.store.maxResultType
+                  ]
+                }" ${i === 0 ? "disabled" : ""}> ${key} </option>`
             )
             .join("")};         
         </select>
           <div class="controls__pagination">
             <button id="prevPageToken"> 
-              <span class="material-symbols-outlined"> navigate_before </span>
+              <span class="material-symbols-outlined" id="prevPageToken"> navigate_before </span>
             </button>
             <section class="controls__pagination_page"> Стр: ${
               this.store.page
             } </section>                
             <button id="nextPageToken"> 
-              <span class="material-symbols-outlined"> navigate_next </span>
+              <span class="material-symbols-outlined" id="nextPageToken"> navigate_next </span>
             </button>
           </div>        
         </section>             
@@ -88,7 +105,9 @@ class VideosVisualizer extends Visualizer {
       `
     );
     this.$selects.forEach(
-      (cls) => (document.querySelector("." + cls).value = this.store.query[cls])
+      (cls) =>
+        ((document.querySelector("." + cls) as HTMLInputElement).value =
+          this.store.query[cls])
     );
     this.$videoContainer = document.querySelector(".videos");
     this.$loader = document.querySelector(".loaderWrap");
@@ -99,14 +118,15 @@ class VideosVisualizer extends Visualizer {
 
   // LISTENERS ---------------------------------------------
   // CHANGE
-  addChangeListenerToContainerHandler = (e) => {
-    if (!this.$selects.find((cls) => e.target.matches(`.${cls}`))) return;
+  addChangeListenerToContainerHandler = (e: Event) => {
+    if (!(e.target instanceof HTMLInputElement)) return;
+    if (!this.$selects.find((cls) => (e.target as HTMLElement).matches(`.${cls}`))) return;
     this.store.updateQueryParam(e.target.name, e.target.value);
     setToLs(e.target.name, e.target.value);
   };
 
   // SELECT ELEMS -----
-  addChangeListenerToContainer($container) {
+  addChangeListenerToContainer($container: HTMLDivElement) {
     $container.addEventListener(
       "change",
       this.addChangeListenerToContainerHandler
@@ -114,32 +134,37 @@ class VideosVisualizer extends Visualizer {
   }
 
   // ПАГИНАЦИЯ -----
-  addListenerToPaginationHandler = (e) => {
-    this.store.updateCurrentVideosPage(e.target.closest("button").id);
+  addListenerToPaginationHandler = (e: MouseEvent) => {
+    if (!(e.target instanceof HTMLElement)) return;
+    this.store.updateCurrentVideosPage(e.target.id as T_PAGINTAION_BTNS);
   };
 
   addListenerToPagination() {
-    this.$pagination.addEventListener(
+    (this.$pagination as HTMLDivElement).addEventListener(
       "click",
       this.addListenerToPaginationHandler
     );
   }
 
   // ПОИСК С СОХРАНЕНИЕМ -----
-  addListenerToSearchHandler = (e) => {
+  addListenerToSearchHandler = (e: Event) => {
+    if (!(e.target instanceof HTMLInputElement)) return;
     this.debouncedSearchValue(e.target.name, e.target.value.trim());
     setToLs("q", e.target.value.trim());
   };
 
   addListenerToSearch() {
-    this.$search.addEventListener("input", this.addListenerToSearchHandler);
+    (this.$search as HTMLInputElement).addEventListener(
+      "input",
+      this.addListenerToSearchHandler
+    );
   }
 
   // THEME ----
-  addListenerToThemeInputHandler = (e) => this.store.toggleAppTheme();
+  addListenerToThemeInputHandler = (e: Event) => this.store.toggleAppTheme();
 
   addListenerToThemeInput() {
-    this.$themeInput.addEventListener(
+    (this.$themeInput as HTMLInputElement).addEventListener(
       "change",
       this.addListenerToThemeInputHandler
     );

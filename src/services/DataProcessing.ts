@@ -1,8 +1,11 @@
-import OPTIONS from "./options.js";
-import { store } from "./store.js";
+import OPTIONS from "./options";
+import { store } from "./store";
+
+// TYPES
+import { I_SINGLE_VIDEO, T_RESOURCE, T_ID, T_SEARCH_VIDEOS_RESPONSE, T_SINGLE_VIDEO_RESPONSE, I_SEARCH_VIDEOS } from './../types/types';
 
 class DataProcessing {
-  getQueryString(params) {
+  getQueryString(params: Record<string, unknown>): string {
     // Object.keys(params) формирует массив ключей в порядке их расположения в объекте!
     return Object.keys(params).reduce(
       (acc, key, index) => `${acc}${index ? "&" : ""}${key}=${params[key]}`,
@@ -10,7 +13,7 @@ class DataProcessing {
     );
   }
 
-  buildReqURL(resource, id) {
+  buildReqURL(resource: T_RESOURCE, id: T_ID) {
     let queryObject;
     switch (resource) {
       case "popular":
@@ -28,11 +31,11 @@ class DataProcessing {
         queryObject = OPTIONS[resource](id);
         break;
     }
-    const { baseURL, ...params } = queryObject;
+    const { baseURL, ...params } = queryObject as Record<string, unknown>;
     return `${baseURL}${this.getQueryString(params)}`;
   }
 
-  getVideosObject(res, resourse) {
+  getVideosObject<T extends T_SEARCH_VIDEOS_RESPONSE>(res: T, resourse: T_RESOURCE): I_SEARCH_VIDEOS {
     return {
       // not nested keys
       kind: res?.kind || "No Kind",
@@ -62,7 +65,7 @@ class DataProcessing {
     };
   }
 
-  getVideoObject(res) {
+  getVideoObject<T extends T_SINGLE_VIDEO_RESPONSE>(res: T): I_SINGLE_VIDEO {
     const data = res?.items[0];
 
     return {

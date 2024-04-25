@@ -1,9 +1,16 @@
-import { Visualizer } from "./Visualizer.js";
+import { Visualizer } from "./Visualizer";
+// TYPES
+import { T_RESOURCE, T_STORE, I_SINGLE_VIDEO } from "../types/types";
 
 const CHANNEL = "https://www.youtube.com/channel/";
 
 class SingleVideoVisualizer extends Visualizer {
-  constructor(...args) {
+
+  videoId: string;
+  $container: HTMLDivElement | null;
+  resource: T_RESOURCE;
+
+  constructor(...args: [T_STORE, string]) {
     super(...args);
     // DOM
     this.$loader = null;
@@ -15,7 +22,7 @@ class SingleVideoVisualizer extends Visualizer {
   }
 
   renderUIElems() {
-    this.$container.insertAdjacentHTML(
+    (this.$container as HTMLDivElement).insertAdjacentHTML(
       "beforeend",
       `<div class="loaderWrap">
             <div class="loader"></div>
@@ -24,11 +31,11 @@ class SingleVideoVisualizer extends Visualizer {
     this.$loader = document.querySelector(".loaderWrap");
   }
 
-  renderAPIData(res) {
+  renderAPIData(res: I_SINGLE_VIDEO | string) {
     console.log(res);
 
-    if (this.store.error)
-      return (this.$videoContainer.innerHTML = `<h2 style="color: brown;"> ${res} </h2>`);
+    if (typeof res === 'string')
+      return ((this.$container as HTMLDivElement).innerHTML = `<h2 style="color: brown;"> ${res} </h2>`);
 
     const {
       id,
@@ -51,7 +58,7 @@ class SingleVideoVisualizer extends Visualizer {
 
        
 
-    this.$container.insertAdjacentHTML(
+    (this.$container as HTMLDivElement).insertAdjacentHTML(
       "beforeend",
       `
       <section class="video">
