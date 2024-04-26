@@ -1,9 +1,9 @@
-import Api from "./Api";
+import Api from "./Api.js";
 // TYPES:
 import {
   T_ID,
   T_RESOURCE,
-  T_STORE,
+  I_STORE,
   I_SEARCH_VIDEOS,
   I_SINGLE_VIDEO,
 } from "./../types/types";
@@ -12,9 +12,9 @@ export class Visualizer {
   $container: HTMLDivElement | null;
   $loader: HTMLDivElement | null;
   $selects: ("maxResults" | "order")[];
-  store: T_STORE;
+  store: I_STORE;
 
-  constructor(store: T_STORE, selector: string) {
+  constructor(store: I_STORE, selector: string) {
     // DOM
     this.$container = document.querySelector(selector);
     this.$loader = null;
@@ -38,11 +38,12 @@ export class Visualizer {
 
   async getAPIData(resource: T_RESOURCE, id: T_ID): Promise<void> {
     (this.$loader as HTMLDivElement).classList.toggle("active");
-    let res = await Api.initData(resource, id);
+    let res = (await Api.initData(resource, id)) as I_SEARCH_VIDEOS;
     if (res instanceof Object) {
-      ["items", "totalResults", "nextPageToken", "prevPageToken"].forEach(
-        (key) => (this.store[key] = res[key])
-      );
+      this.store.items = res.items;
+      this.store.totalResults = res.totalResults;
+      this.store.nextPageToken = res.nextPageToken;
+      this.store.prevPageToken = res.prevPageToken;
       this.store.error = "";
     } else {
       this.store.error = res;

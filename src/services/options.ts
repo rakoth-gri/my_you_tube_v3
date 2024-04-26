@@ -2,7 +2,7 @@ const BASE_URL = `https://www.googleapis.com/youtube/v3/`;
 const API_KEY = `AIzaSyAGAUvZJvkDzoNxltE7KcZBJO_zQIJ3kFQ`;
 
 // TYPES:
-import { T_ID, T_MAX_RESULTS, T_ORDER_TYPE } from "../types/types";
+import { T_ID, T_MAX_RESULTS, T_ORDER_TYPE } from "../types/types.js";
 
 const OPTIONS = {
   video: (id: T_ID) => ({

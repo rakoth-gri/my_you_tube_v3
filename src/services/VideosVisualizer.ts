@@ -1,8 +1,13 @@
-import { Visualizer } from "./Visualizer";
-import { debounce } from "./debounce";
-import { setToLs } from "./storage";
+import { Visualizer } from "./Visualizer.js";
+import { debounce } from "./debounce.js";
+import { setToLs } from "./storage.js";
 // TYPES:
-import { T_PAGINTAION_BTNS, T_STORE, T_RESOURCE } from "./../types/types";
+import {
+  T_PAGINTAION_BTNS,
+  I_STORE,
+  T_RESOURCE,
+  T_MAX_RESULTS_KEYS,
+} from "./../types/types";
 
 class VideosVisualizer extends Visualizer {
   $videoContainer: null | HTMLDivElement;
@@ -10,9 +15,9 @@ class VideosVisualizer extends Visualizer {
   // INPUTS DOM:
   $themeInput: null | HTMLInputElement;
   $search: null | HTMLInputElement;
-  debouncedSearchValue: (...args: unknown[]) => any;
+  debouncedSearchValue: (...args: string[]) => any;
 
-  constructor(...args: [T_STORE, string]) {
+  constructor(...args: [I_STORE, string]) {
     // DOM
     super(...args);
     this.$videoContainer = null;
@@ -20,7 +25,7 @@ class VideosVisualizer extends Visualizer {
     this.$pagination = null;
     this.$themeInput = null;
     this.debouncedSearchValue = debounce(
-      (...args: unknown[]) => this.store.updateQueryParam(...args),
+      (...args: string[]) => this.store.updateQueryParam(args[0], args[1]),
       500
     );
     // INVOKING Queue
@@ -82,9 +87,7 @@ class VideosVisualizer extends Visualizer {
             .map(
               (key, i) =>
                 `<option value="${
-                  this.store.maxResultType[
-                    key as keyof typeof this.store.maxResultType
-                  ]
+                  this.store.maxResultType[key as T_MAX_RESULTS_KEYS]
                 }" ${i === 0 ? "disabled" : ""}> ${key} </option>`
             )
             .join("")};         
@@ -119,8 +122,11 @@ class VideosVisualizer extends Visualizer {
   // LISTENERS ---------------------------------------------
   // CHANGE
   addChangeListenerToContainerHandler = (e: Event) => {
-    if (!(e.target instanceof HTMLInputElement)) return;
-    if (!this.$selects.find((cls) => (e.target as HTMLElement).matches(`.${cls}`))) return;
+    if (!(e.target instanceof HTMLSelectElement)) return;
+    if (
+      !this.$selects.find((cls) => (e.target as HTMLElement).matches(`.${cls}`))
+    )
+      return;
     this.store.updateQueryParam(e.target.name, e.target.value);
     setToLs(e.target.name, e.target.value);
   };

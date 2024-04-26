@@ -4,11 +4,11 @@ import {
   getThemeFromLs,
   getOrderFromLs,
   getmaxResultsFromLs,
-} from "./storage";
+} from "./storage.js";
 // TYPES:
-import { T_PAGINTAION_BTNS, T_RESOURCE, T_ID } from "./../types/types";
+import { T_PAGINTAION_BTNS, T_RESOURCE, I_STORE } from "./../types/types.js";
 
-const store = {
+const store: I_STORE = {
   root: document.querySelector(":root") as HTMLHtmlElement,
   theme: getThemeFromLs("ut_theme"),
   items: [],
@@ -19,7 +19,7 @@ const store = {
     q: getFromLs("q"),
   },
   resource: "search" as T_RESOURCE,
-  id: '',
+  id: "",
   totalResults: 0,
   nextPageToken: "",
   prevPageToken: "",
@@ -35,12 +35,12 @@ const store = {
     "По просмотрам": "viewCount",
   },
   maxResultType: {
-    "Кол-во клипов на странице:": "",
-    "6 клипов": 6,
-    "12 клипов": 12,
-    "18 клипов": 18,
-    "24 клипов": 24,
-    "30 клипов": 30,
+    "Кол-во клипов на странице": "",
+    "6 клипов": '6',
+    "12 клипов": '12',
+    "18 клипов": '18',
+    "24 клипа": '24',
+    "30 клипов": '30',
   },
   updateQueryParam(key: string, v: string) {
     Object.assign(this.query, { [key]: v });

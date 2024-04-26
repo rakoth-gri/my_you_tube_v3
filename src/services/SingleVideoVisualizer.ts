@@ -1,6 +1,6 @@
-import { Visualizer } from "./Visualizer";
+import { Visualizer } from "./Visualizer.js";
 // TYPES
-import { T_RESOURCE, T_STORE, I_SINGLE_VIDEO } from "../types/types";
+import { T_RESOURCE, I_STORE, I_SINGLE_VIDEO } from "../types/types.js";
 
 const CHANNEL = "https://www.youtube.com/channel/";
 
@@ -10,7 +10,7 @@ class SingleVideoVisualizer extends Visualizer {
   $container: HTMLDivElement | null;
   resource: T_RESOURCE;
 
-  constructor(...args: [T_STORE, string]) {
+  constructor(...args: [I_STORE, string]) {
     super(...args);
     // DOM
     this.$loader = null;
@@ -32,8 +32,7 @@ class SingleVideoVisualizer extends Visualizer {
   }
 
   renderAPIData(res: I_SINGLE_VIDEO | string) {
-    console.log(res);
-
+    
     if (typeof res === 'string')
       return ((this.$container as HTMLDivElement).innerHTML = `<h2 style="color: brown;"> ${res} </h2>`);
 

@@ -1,9 +1,8 @@
 import OPTIONS from "../services/options"
-import { store } from "../services/store";
 
 export type T_ID = string;
 
-export type T_MAX_RESULTS = 6 | 12 | 18 | 24 | 30;
+export type T_MAX_RESULTS = '6' | '12' | '18' | '24' | '30';
 
 export type T_ORDER_TYPE = "date" | "rating" | "relevance" | "title" | "viewCount";
 
@@ -11,15 +10,16 @@ export type T_PAGINTAION_BTNS = 'prevPageToken' | 'nextPageToken'
 
 export type T_RESOURCE = keyof typeof OPTIONS;
 
-// STORE
+export type T_ORDER_TYPE_KEYS = "Выберите сортировку" | "По дате" | "По рейтингу" | "По релевантности" | "По названию" | "По просмотрам";
 
-export type T_STORE = typeof store;
+export type T_MAX_RESULTS_KEYS = "Кол-во клипов на странице" | "6 клипов" | "12 клипов" | "18 клипов" | "24 клипа" | "30 клипов";
 
-//  YOUTUBE RESPONSES
+//  YOU_TUBE_API RESPONSES
 export type T_SINGLE_VIDEO_RESPONSE = Record<string, unknown> & {items: any[]}
 
 export type T_SEARCH_VIDEOS_RESPONSE = I_SEARCH_BASE & {items: any[], pageInfo: Record<string, number>}
 
+// DATAPROCESSES YOU_TUBE_API RESPONSES
 export interface I_SINGLE_VIDEO {
     id: string,
     publishedAt: string,
@@ -51,7 +51,33 @@ export interface I_SEARCH_VIDEOS extends I_SEARCH_BASE {
     items: Partial<I_SINGLE_VIDEO>[]  
 }
 
+// STORE
 
-
-
+export interface I_STORE  {
+    root: HTMLHtmlElement;
+    theme: string;
+    items: (Partial<I_SINGLE_VIDEO>)[],
+    subscribers: any[],
+    query: {
+        maxResults: T_MAX_RESULTS,
+        order: T_ORDER_TYPE,
+        q: string;
+    },
+    resource: T_RESOURCE,
+    id: string,
+    totalResults : number;
+    nextPageToken: string;
+    prevPageToken: string;
+    currentPageToken: string;
+    error: string;
+    page: number;
+    orderType: Record<T_ORDER_TYPE_KEYS, (T_ORDER_TYPE | "")>;
+    maxResultType: Record<T_MAX_RESULTS_KEYS, (T_MAX_RESULTS | "")>;
+    updateQueryParam: (key: string, v: string) => void,
+    updateCurrentVideosPage: (param: T_PAGINTAION_BTNS) => void,
+    observer: <T extends Function>(cb: T) => void,
+    toggleAppTheme: () => void;
+    VisualizeAppTheme: (theme: string) => void;
+    changeRootTheme: (theme: string) => void;
+}
 

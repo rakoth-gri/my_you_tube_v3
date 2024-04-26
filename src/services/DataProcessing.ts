@@ -1,5 +1,5 @@
-import OPTIONS from "./options";
-import { store } from "./store";
+import OPTIONS from "./options.js";
+import { store } from "./store.js";
 
 // TYPES
 import { I_SINGLE_VIDEO, T_RESOURCE, T_ID, T_SEARCH_VIDEOS_RESPONSE, T_SINGLE_VIDEO_RESPONSE, I_SEARCH_VIDEOS } from './../types/types';

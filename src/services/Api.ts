@@ -1,4 +1,4 @@
-import DataProcessing from "./DataProcessing";
+import DataProcessing from "./DataProcessing.js";
 
 // TYPES:
 import {
