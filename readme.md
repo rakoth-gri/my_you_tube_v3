@@ -10,8 +10,8 @@
 - Переходим на гл. страницу канала
 - Выбираем раздел 'О КАНАЛЕ':
 
-1.  ![О КАНАЛЕ](img/chanellId.png "О КАНАЛЕ")
-2.  Пример ID канала Guitartek: UCe0CivunALluST1dUXnlv5g
+1.  ![О КАНАЛЕ](src/img/chanellId.png "О КАНАЛЕ")
+2.  ID канала Guitartek: UCe0CivunALluST1dUXnlv5g
 
 #### HTML-шаблон для preview
 
@@ -96,7 +96,7 @@ Projects that enable the YouTube Data API have a default quota allocation of 10,
 
 ```
 
-#### EXAMPLES WORKING WITH VIDEO ID-PARAMETER:
+#### EXAMPLE: FILTERED BY VIDEO-ID PARAMETER:
 
 ```javascript
 {
@@ -182,4 +182,4 @@ Projects that enable the YouTube Data API have a default quota allocation of 10,
 
 #### EXAMPLE WORKING WITH '/videos' url, filtered by id:
 
-1.  ![BASE_URL/${videos}](img/video.png "https://www.googleapis.com/youtube/v3/videos")
+1.  ![BASE_URL/${videos}](src/img/video.png "https://www.googleapis.com/youtube/v3/videos")

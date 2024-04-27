@@ -1,29 +1,31 @@
-const BASE_URL = `https://www.googleapis.com/youtube/v3/`;
-const API_KEY = `AIzaSyAGAUvZJvkDzoNxltE7KcZBJO_zQIJ3kFQ`;
+const API = {
+  base: `https://www.googleapis.com/youtube/v3/`,
+  key: `AIzaSyAGAUvZJvkDzoNxltE7KcZBJO_zQIJ3kFQ`,
+};
 
 // TYPES:
 import { T_ID, T_MAX_RESULTS, T_ORDER_TYPE } from "../types/types.js";
 
 const OPTIONS = {
   video: (id: T_ID) => ({
-    baseURL: `${BASE_URL}videos?`,
+    baseURL: `${API.base}videos?`,
     id,
-    key: API_KEY,
+    key: API.key,
     // fields: "items(id,snippet(channelId,title,categoryId,description,thumbnails,channelTitle,publishedAt),statistics)",
     part: "statistics,snippet,contentDetails,topicDetails,id,status",
   }),
   videoComments: (id: T_ID) => ({
-    baseURL: `${BASE_URL}comments?`,
+    baseURL: `${API.base}comments?`,
     // Это ID конкретного видео, к которму мы получаем комментарии
     parentId: id,
-    key: API_KEY,
+    key: API.key,
     part: "id,snippet",
     maxResults: 10,
   }),
   popular: (maxResults: T_MAX_RESULTS) => ({
-    baseURL: `${BASE_URL}videos/?`,
+    baseURL: `${API.base}videos/?`,
     chart: "mostPopular",
-    key: API_KEY,
+    key: API.key,
     fields:
       "items(id,snippet(channelId,title,categoryId,description,thumbnails,channelTitle,publishedAt),statistics)",
     part: "statistics,snippet,topicDetails",
@@ -37,8 +39,8 @@ const OPTIONS = {
     maxResults: T_MAX_RESULTS,
     pageToken: string
   ) => ({
-    baseURL: `${BASE_URL}search?`,
-    key: API_KEY,
+    baseURL: `${API.base}search?`,
+    key: API.key,
     q,
     part: "snippet",
     maxResults,
@@ -50,14 +52,14 @@ const OPTIONS = {
     videoDefinition: "high",
   }),
   channel: (id: T_ID) => ({
-    baseURL: `${BASE_URL}channels?`,
+    baseURL: `${API.base}channels?`,
     id,
-    key: API_KEY,
+    key: API.key,
     // fields: "items(id,snippet(title),statistics)",
     part: "snippet,statistics,id,contentOwnerDetails",
   }),
 };
 
-export type T_OPTIONS = typeof OPTIONS
+export type T_OPTIONS = typeof OPTIONS;
 
 export default OPTIONS;

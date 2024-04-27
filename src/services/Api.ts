@@ -9,11 +9,6 @@ import {
 } from "../types/types";
 
 export default class Api {
-  // static fetchData(url) {
-  //   return fetch(url)
-  //     .then((res) => res.json())
-  //     .catch((e) => console.log(e));
-  // }
 
   static fetchData = async (
     url: string
